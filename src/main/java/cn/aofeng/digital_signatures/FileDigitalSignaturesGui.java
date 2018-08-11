@@ -350,7 +350,7 @@ public class FileDigitalSignaturesGui extends javax.swing.JFrame {
         
         // 启动新线程计算文件的hash值.
         Thread calThread = new Thread(new Runnable() {
-            @Override
+            
             public void run() {
                 calculateBtn.setEnabled(false);
                 String hash = digest.hash(filePathStr, hashType.getSelectedItem().toString());
@@ -439,7 +439,7 @@ public class FileDigitalSignaturesGui extends javax.swing.JFrame {
 
         Thread progessThread = new Thread(new Runnable() {
             
-            @Override
+            
             public void run() {
                 while (true) {
                     // 处理进度条的取消动作
@@ -514,7 +514,7 @@ public class FileDigitalSignaturesGui extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
+            
             public void run() {
             	GuiUtils.usePlasticXPThemeStyle();
                 FileDigitalSignaturesGui fileDigestObj = new FileDigitalSignaturesGui();
