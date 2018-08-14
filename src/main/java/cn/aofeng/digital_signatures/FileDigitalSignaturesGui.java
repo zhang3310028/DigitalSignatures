@@ -3,9 +3,6 @@
  */
 package cn.aofeng.digital_signatures;
 
-import cn.aofeng.util.IOUtils;
-import cn.aofeng.util.gui.GuiUtils;
-
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,9 +17,13 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.ProgressMonitor;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+
+import cn.aofeng.util.IOUtils;
+import cn.aofeng.util.gui.GuiUtils;
 
 /**
  * 文件数字签名摘要界面.
@@ -394,7 +395,30 @@ public class FileDigitalSignaturesGui extends javax.swing.JFrame {
 
         boolean isSuccess = false;
         String hashFileExtension = this.hashType.getSelectedItem().toString();
-        String hashFileFullPath  = srcFileFullPath + "." + hashFileExtension.toLowerCase();
+        JFileChooser chooser = new JFileChooser(srcFileFullPath);
+		chooser.removeChoosableFileFilter(chooser.getFileFilter());
+		chooser.setSelectedFile(new File(srcFileFullPath));
+		FileNameExtensionFilter fileNameExtensionFilter = null;
+		fileNameExtensionFilter = new FileNameExtensionFilter("md_five", "md_five");
+		chooser.addChoosableFileFilter(fileNameExtensionFilter);
+		fileNameExtensionFilter = new FileNameExtensionFilter(hashFileExtension.toLowerCase(), hashFileExtension.toLowerCase());
+		chooser.addChoosableFileFilter(fileNameExtensionFilter);
+		chooser.setFileFilter(fileNameExtensionFilter);
+		int returnVal = chooser.showSaveDialog(this);
+		String hashFileFullPath = null;
+		if (returnVal == JFileChooser.APPROVE_OPTION) {  
+				hashFileFullPath = chooser.getSelectedFile().getAbsolutePath();
+				FileNameExtensionFilter fileFilter = (FileNameExtensionFilter)chooser.getFileFilter();
+				String extension = fileFilter.getExtensions()[0];
+				
+				if(hashFileFullPath.toUpperCase().endsWith(extension.toUpperCase())){
+				
+				}else{
+					hashFileFullPath = hashFileFullPath + "." + extension;
+				}
+		}else{
+				return;
+		}
         File hashFileObj = new File(hashFileFullPath);
         OutputStream out = null;
         try {
